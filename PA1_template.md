@@ -55,7 +55,7 @@ data %>% group_by(date) %>%
                       plot.subtitle = element_text(hjust = 0.5))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-html/histogram_withNA-1.png)<!-- -->
 
 ### Calculate and report the mean and median total number of steps per day
 
@@ -90,7 +90,7 @@ data %>% group_by(interval) %>%
               plot.subtitle = element_text(hjust = 0.5))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](PA1_template_files/figure-html/time-series_withNA-1.png)<!-- -->
 
 ### Which 5-minute interval. on average cross all days in the dataset. contains the maximum number of steps?
 
@@ -167,7 +167,7 @@ df2 %>% group_by(date) %>%
               plot.subtitle = element_text(hjust = 0.5))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](PA1_template_files/figure-html/histogram_filledNA-1.png)<!-- -->
 
 ### Report the mean and median total number of steps taken per day
 
@@ -214,4 +214,4 @@ df2 %>% # create a new column indicate whether given date is weekday or weekend
               plot.subtitle = element_text(hjust = 0.5))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](PA1_template_files/figure-html/time-seriers-given-day-type_filledNA-1.png)<!-- -->

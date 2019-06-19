@@ -12,11 +12,11 @@ library(knitr)
 opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
-```{r}
+```{r library}
 library(tidyverse)
 ```
 
-```{r}
+```{r import-and-preprocessing}
 if(!file.exists("Data")) dir.create("Data")
 if(!file.exists("./Data/activity.csv")){
         unzip("./activity.zip", exdir = "./Data")}
@@ -30,7 +30,7 @@ summary(data)
 ## What is mean total number of steps taken per day?
 
 ### Make a histogram of the total number of steps taken each day with NA value ignored
-```{r} 
+```{r histogram_withNA} 
 data %>% group_by(date) %>%
                 summarize(totalSteps = sum(steps, na.rm = TRUE)) %>%
                 ggplot() +
@@ -45,7 +45,7 @@ data %>% group_by(date) %>%
 ```
 
 ### Calculate and report the mean and median total number of steps per day
-```{r}
+```{r mean-and-median_withNA} 
 data %>% group_by(date) %>%
         summarize(totalSteps = sum(steps, na.rm = TRUE)) %>%
         summarize(median = median(totalSteps), mean = mean(totalSteps))
@@ -54,7 +54,7 @@ data %>% group_by(date) %>%
 ## What is the average daily activity pattern?
 
 ### Time series plot of a 5-minute inteval and the average number of steps taken average cross all days
-```{r}
+```{r time-series_withNA}
 data %>% group_by(interval) %>%
         summarize(meanSteps = mean(steps, na.rm=TRUE)) %>%
         ggplot() +
@@ -69,7 +69,7 @@ data %>% group_by(interval) %>%
 ```
 
 ### Which 5-minute interval. on average cross all days in the dataset. contains the maximum number of steps?
-```{r}
+```{r max-interval}
 df1<- data %>% group_by(interval) %>%
                 summarize(meanSteps = mean(steps, na.rm=TRUE)) 
 mm <- df1 %>% filter(meanSteps == max(meanSteps))
@@ -81,7 +81,7 @@ Time interval start with **`r mm$interval`** on average cross all days in the da
 ## Imputing missing values
 
 ### Calculate and report the total number of missing data
-```{r}
+```{r totoal-missing-data}
 MissingValue <- data.frame(totalMissing = sum(is.na(data$steps)),
                         proportionMissing = mean(is.na(data$steps)))
 print(MissingValue)
@@ -92,7 +92,7 @@ Total number of missing data is **`r MissingValue$totalMissing`**.
 
 Using mean of each time interval cross all days to fill the missing value.
 
-```{r}
+```{r new-data}
 df2 <- data
 df2 <- df2 %>% mutate(meanSteps = rep(df1$meanSteps, length(unique(df2$date))))
 df2$steps <- ifelse(is.na(df2$steps), df2$meanSteps, df2$steps)
@@ -103,7 +103,7 @@ head(df2)
 
 
 ### Make a histogram with the new dataset with missing value filled
-```{r}
+```{r histogram_filledNA}
 df2 %>% group_by(date) %>%
         summarize(totalSteps = sum(steps)) %>%
         ggplot() +
@@ -118,7 +118,7 @@ df2 %>% group_by(date) %>%
 ```
 
 ### Report the mean and median total number of steps taken per day
-```{r}
+```{r mean-and-median-filledNA}
 df2 %>% group_by(date) %>%
         summarize(totalSteps = sum(steps)) %>%
         summarize(meanSteps = mean(totalSteps), 
@@ -133,7 +133,7 @@ This meanings if we imputing the missing data, both of mean and median of total 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+```{r time-seriers-given-day-type_filledNA}
 df2 %>% # create a new column indicate whether given date is weekday or weekend
         mutate(Day = ifelse(weekdays(date) %in% c("Saturday", "Sunday"),
                             "weekend", "weekday")) %>%
